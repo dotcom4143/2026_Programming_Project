@@ -3,31 +3,24 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
+using NUnit.Framework;
+
 
 
 public class Card : MonoBehaviour
 {
-    // 변수
     public TextMeshProUGUI card;
-    public int cardNum;
+    public int cardNumbers;
     public float rotateSpeed;
 
     public bool isFront = false;
-
     public bool isMatched = false;
-
-
-    public Quaternion flipRotation = Quaternion.Euler(0, 180f, 0);
-    public Quaternion originRotation = Quaternion.Euler(0, 0, 0);
 
     public CardGame cardGame;
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-    }
+    private Quaternion flipRotation = Quaternion.Euler(0, 180f, 0);
+    private Quaternion originRotation = Quaternion.Euler(0, 0, 0);
 
-    // Update is called once per frame
     void Update()
     {
         if(isFront)
@@ -40,28 +33,27 @@ public class Card : MonoBehaviour
         }
     }
 
-    // 카드 돌리기
     public void ClickCard()
     {
-        // if (isMatched) return;
 
         if (!isMatched)
         {
+            isFront = !isFront;
             cardGame.OnClickCard(this);
-            isFront = true;
         }
     }
 
-    public void SetCardNum(int newNum)
+    public void SetCardNumbers(int newNumbers)
     {
         card = GetComponentInChildren<TextMeshProUGUI>();
-        cardNum = newNum;
 
-        card.text = cardNum.ToString();
+        cardNumbers = newNumbers;
+
+        card.text = cardNumbers.ToString();
     }
 
-    public void ChangeColor(Color newColor)
+    public void SetImage(Sprite sprite)
     {
-        GetComponent<Image>().color = newColor;
+        GetComponent<Image>().sprite = sprite;
     }
 }
