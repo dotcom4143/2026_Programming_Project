@@ -15,43 +15,41 @@ public class CardGame : MonoBehaviour
     void Start()
     {
         StartGame();
-
     }
 
 
-    private List<int> GeneratePairNumbers(int cardCount)
+    private List<int> GeneratePairNum(int cardCount)
     {
 
         int pairCount = cardCount / 2;
-        List<int> newCardNumbers = new List<int>();
+        List<int> newCardNum = new List<int>();
 
         for(int i = 0; i< pairCount; i++)
         {
-            newCardNumbers.Add(i);
-            newCardNumbers.Add(i);
+            newCardNum.Add(i);
+            newCardNum.Add(i);
         }
 
 
-        for(int i = newCardNumbers.Count -1; i > 0; i--)
+        for(int i = newCardNum.Count -1; i > 0; i--)
         {
             int rnd = Random.Range(0, i + 1);
-            int temp = newCardNumbers[i];
-            newCardNumbers[i] = newCardNumbers[rnd];
-            newCardNumbers[rnd] = temp; 
+            int temp = newCardNum[i];
+            newCardNum[i] = newCardNum[rnd];
+            newCardNum[rnd] = temp; 
         }
 
-        return newCardNumbers;
+        return newCardNum;
     }
 
     private void StartGame()
     {
-        List<int> randomPairNumbers = GeneratePairNumbers(cards.Count);
+        List<int> randomPairNum = GeneratePairNum(cards.Count);
 
         for (int i = 0; i < cards.Count; ++i)
         {
-            cards[i].SetCardNumbers(randomPairNumbers[i]);
-            cards[i].SetImage(sprites[randomPairNumbers[i]]);
-            cards[i].isFront = false;
+            cards[i].SetCardNum(randomPairNum[i]);
+            cards[i].SetImage(sprites[(randomPairNum[i])]);
         }
     }
 
@@ -59,16 +57,18 @@ public class CardGame : MonoBehaviour
     {
         isChecking = true;
 
-        if(firstCard.cardNumbers == secondCard.cardNumbers)
+        if(firstCard.cardNum == secondCard.cardNum)
         {
             firstCard.isMatched = true;
             secondCard.isMatched = true;
 
-            //firstCard.ChangeColor(Color.yellow);
-            //secondCard.ChangeColor(Color.yellow);
+            firstCard.ChangeColor(Color.yellow);
+            secondCard.ChangeColor(Color.yellow);
 
             firstCard = null;
             secondCard = null;
+
+            isChecking = false;
         }
         else
         {
@@ -78,20 +78,31 @@ public class CardGame : MonoBehaviour
 
     private void HideCard()
     {
-        firstCard.isFront = false;
-        secondCard.isFront = false;
+        firstCard.Flip(false);
+        secondCard.Flip(false);
+
+        isChecking = false;
+
+        firstCard = null;
+        secondCard = null;
     }
 
     public void OnClickCard(Card Card)
     {
+        if(isChecking)
+        {
+            return;
+        }
 
         if (firstCard == null)
         {
             firstCard = Card;
+            firstCard.Flip(true);
         }
-        else
+        else if (firstCard !=Card)
         {
             secondCard = Card;
+            secondCard.Flip(true);
         }
 
         if(firstCard != null && secondCard != null)

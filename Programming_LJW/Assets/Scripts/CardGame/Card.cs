@@ -10,7 +10,7 @@ using NUnit.Framework;
 public class Card : MonoBehaviour
 {
     public TextMeshProUGUI card;
-    public int cardNumbers;
+    public int cardNum;
     public float rotateSpeed;
 
     public bool isFront = false;
@@ -38,22 +38,31 @@ public class Card : MonoBehaviour
 
         if (!isMatched)
         {
-            isFront = !isFront;
             cardGame.OnClickCard(this);
         }
     }
 
-    public void SetCardNumbers(int newNumbers)
+    public void SetCardNum(int newNum)
     {
         card = GetComponentInChildren<TextMeshProUGUI>();
 
-        cardNumbers = newNumbers;
+        cardNum = newNum;
 
-        card.text = cardNumbers.ToString();
+        card.text = cardNum.ToString();
+    }
+
+    public void ChangeColor(Color newColor)
+    {
+        GetComponent<Image>().color=newColor;
     }
 
     public void SetImage(Sprite sprite)
     {
         GetComponent<Image>().sprite = sprite;
+    }
+
+    public void Flip(bool isFront)
+    {
+        this.isFront = isFront;
     }
 }
